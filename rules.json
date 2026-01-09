@@ -1,0 +1,41 @@
+{
+  "rules": [
+    {
+      "name": "Filter spam-like emails",
+      "predicate": "All",
+      "conditions": [
+        {
+          "field": "Subject",
+          "predicate": "Contains",
+          "value": "Sortitt"
+        },
+        {
+          "field": "Message",
+          "predicate": "Contains",
+          "value": "appreciate your enthusiasm"
+        }
+      ],
+      "actions": [
+        {
+          "action": "mark as unread"
+        }
+      ]
+    },
+    {
+      "name": "Mark happy fox emails as unread",
+      "predicate": "Any",
+      "conditions": [
+        {
+          "field": "Subject",
+          "predicate": "Contains",
+          "value": "HappyFox"
+        }
+      ],
+      "actions": [
+        {
+          "action": "Mark as Unread"
+        }
+      ]
+    }
+  ]
+}

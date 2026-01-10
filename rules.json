@@ -1,7 +1,7 @@
 {
   "rules": [
     {
-      "name": "Filter spam-like emails",
+      "name": "Filter Sortitt emails to unread",
       "predicate": "All",
       "conditions": [
         {

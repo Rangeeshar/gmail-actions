@@ -14,7 +14,7 @@ A standalone Python script that integrates with Gmail API to fetch emails, store
 
 - Python 3.9 or higher
 - Google Cloud Project with Gmail API enabled
-- OAuth2 credentials file from Google Cloud Console
+- OAuth2 credentials file (`client_secret.json`) from Google Cloud Console
 
 ## Installation
 
@@ -45,10 +45,57 @@ A standalone Python script that integrates with Gmail API to fetch emails, store
    ```
 
 4. **Set up Google Cloud Project and OAuth2 credentials**:
-   - Copy the example credentials file: `cp credentials.json.example credentials.json`
-   - Replace the placeholder values with your actual Google Cloud credentials
-   - See `CREDENTIALS_SETUP.md` for detailed instructions on obtaining credentials from Google Cloud Console
-   - **Note**: The `credentials.json` file is gitignored for security. Never commit real credentials.
+
+   To create `client_secret.json` from Google Cloud Console:
+
+   a. **Go to Google Cloud Console**:
+      - Visit [Google Cloud Console](https://console.cloud.google.com/)
+      - Sign in with your Google account
+
+   b. **Create or Select a Project**:
+      - Click on the project dropdown at the top
+      - Click "New Project" to create a new project, or select an existing one
+      - Give your project a name (e.g., "Gmail Actions")
+      - Click "Create"
+
+   c. **Enable Gmail API**:
+      - In the left sidebar, go to "APIs & Services" > "Library"
+      - Search for "Gmail API" in the search bar
+      - Click on "Gmail API" from the results
+      - Click the "Enable" button
+
+   d. **Create OAuth 2.0 Credentials**:
+      - Go to "APIs & Services" > "Credentials"
+      - Click "Create Credentials" at the top
+      - Select "OAuth client ID"
+      - If prompted, configure the OAuth consent screen first:
+        - Choose "External" (unless you have a Google Workspace account)
+        - Fill in the required app information (App name, User support email, Developer contact email)
+        - Click "Save and Continue" through the scopes and test users steps
+      - Back in Credentials, select "Desktop app" as the application type
+      - Give it a name (e.g., "Gmail Actions Client")
+      - Click "Create"
+      - You'll see a dialog with your **Client ID** and **Client Secret**
+
+   e. **Download the Credentials File**:
+      - Click "Download JSON" button in the credentials dialog
+      - Save the downloaded file as `client_secret.json` in the project root directory
+      - Alternatively, you can manually create `client_secret.json` with this structure:
+
+        ```json
+        {
+          "installed": {
+            "client_id": "your-client-id.apps.googleusercontent.com",
+            "client_secret": "your-client-secret",
+            "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+            "token_uri": "https://oauth2.googleapis.com/token",
+            "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+            "redirect_uris": ["http://localhost"]
+          }
+        }
+        ```
+
+   **Note**: The `client_secret.json` file is gitignored for security. Never commit real credentials to version control.
 
 ## Usage
 
@@ -220,7 +267,7 @@ Edit `config.py` to customize:
 
 - `DATABASE_PATH`: Path to SQLite database file (default: `gmail_actions.db`)
 - `MAX_EMAILS_TO_FETCH`: Maximum number of emails to fetch (default: 100, set to `None` for all)
-- `CREDENTIALS_FILE`: Path to OAuth2 credentials file (default: `credentials.json`)
+- `CREDENTIALS_FILE`: Path to OAuth2 credentials file (default: `client_secret.json`)
 - `TOKEN_FILE`: Path to store authentication token (default: `token.json`)
 
 ## Testing
@@ -264,14 +311,14 @@ gmail-actions/
 │   ├── test_database.py
 │   ├── test_rule_processor.py
 │   └── test_integration.py
-└── credentials.json      # OAuth2 credentials (not in repo)
+└── client_secret.json   # OAuth2 credentials (not in repo)
 ```
 
 ## Troubleshooting
 
 ### Authentication Issues
 
-- Ensure `credentials.json` is in the project root
+- Ensure `client_secret.json` is in the project root
 - Delete `token.json` and re-authenticate if you get permission errors
 - Make sure Gmail API is enabled in your Google Cloud Project
 
@@ -288,7 +335,7 @@ gmail-actions/
 
 ## Security Notes
 
-- Never commit `credentials.json` or `token.json` to version control
+- Never commit `client_secret.json` or `token.json` to version control
 - These files are already in `.gitignore`
 - Keep your OAuth2 credentials secure
 
